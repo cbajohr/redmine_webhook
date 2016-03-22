@@ -23,37 +23,37 @@ module RedmineWebhook
     private
     def issue_to_json(issue, controller)
       {
-        :payload => {
-          :action => 'opened',
-          :issue => RedmineWebhook::IssueWrapper.new(issue).to_hash,
-          :url => controller.issue_url(issue)
-        }
+        :action => 'opened',
+        :issue => RedmineWebhook::IssueWrapper.new(issue).to_hash,
+        :url => controller.issue_url(issue)
       }.to_json
     end
 
     def journal_to_json(issue, journal, controller)
       {
-        :payload => {
-          :action => 'updated',
-          :issue => RedmineWebhook::IssueWrapper.new(issue).to_hash,
-          :journal => RedmineWebhook::JournalWrapper.new(journal).to_hash,
-          :url => controller.issue_url(issue)
-        }
+        :action => 'updated',
+        :issue => RedmineWebhook::IssueWrapper.new(issue).to_hash,
+        :journal => RedmineWebhook::JournalWrapper.new(journal).to_hash,
+        :url => controller.issue_url(issue)
       }.to_json
     end
 
     def post(webhook, request_body)
-      Thread.start do
-        begin
-          Faraday.post do |req|
-            req.url webhook.url
-            req.headers['Content-Type'] = 'application/json'
-            req.body = request_body
-          end
-        rescue => e
-          Rails.logger.error e
+      # Thread.start do
+      #   begin
+        connection = Faraday.new(:url => webhook.url)
+        result = connection.post do |req|
+          req.url webhook.url
+          req.headers['Content-Type'] = 'application/json'
+          req.body = request_body
         end
-      end
+        puts result
+        # binding.pry
+      #   rescue => e
+      #     Rails.logger.error e
+      #   end
+      # end
+
     end
   end
 end
