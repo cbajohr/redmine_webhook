@@ -39,21 +39,12 @@ module RedmineWebhook
     end
 
     def post(webhook, request_body)
-      # Thread.start do
-      #   begin
-        connection = Faraday.new(:url => webhook.url)
-        result = connection.post do |req|
-          req.url webhook.url
-          req.headers['Content-Type'] = 'application/json'
-          req.body = request_body
-        end
-        puts result
-        # binding.pry
-      #   rescue => e
-      #     Rails.logger.error e
-      #   end
-      # end
-
+      connection = Faraday.new(:url => webhook.url)
+      result = connection.post do |req|
+        req.url webhook.url
+        req.headers['Content-Type'] = 'application/json'
+        req.body = request_body
+      end
     end
   end
 end
