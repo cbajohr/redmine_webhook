@@ -3,9 +3,15 @@ Redmine WebHook Plugin
 
 A Redmine plugin posts webhook on creating and updating tickets.
 
+This fork fixes some JSON formattings, for using the redmine webhooks with rocket.chat
+
 Author
 ------------------------------
 * @suer
+
+Editor
+------------------------------
+* @tweetoph
 
 Install
 ------------------------------
